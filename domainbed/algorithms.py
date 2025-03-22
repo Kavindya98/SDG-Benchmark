@@ -49,40 +49,40 @@ if torch.cuda.is_available():
 else:
     device = "cpu"
 
-ALGORITHMS = [
+ALGORITHMS = [ # Commented Algorithms are not tested to work with the edited codebase
     'ERM',
     'ERM_ViT',
     'TFSViT',  # TFS-ViT
-    'ATFSViT',  # ATFS-ViT 
-    'SDViT_TFSViT',  # SDViT + TFS-ViT
+    # 'ATFSViT',  # ATFS-ViT 
+    # 'SDViT_TFSViT',  # SDViT + TFS-ViT
     'SDViT',
-    'Fish',
-    'IRM',
-    'GroupDRO',
-    'Mixup',
-    'MLDG',
-    'CORAL',
-    'MMD',
-    'DANN',
-    'CDANN',
-    'MTL',
+    # 'Fish',
+    # 'IRM',
+    # 'GroupDRO',
+    # 'Mixup',
+    # 'MLDG',
+    # 'CORAL',
+    # 'MMD',
+    # 'DANN',
+    # 'CDANN',
+    # 'MTL',
     'SagNet',
     'SagNet_ViT',
-    'ARM',
-    'VREx',
-    'RSC',
-    'SD',
-    'ANDMask',
-    'SANDMask',
-    'IGA',
-    'SelfReg',
-    "Fishr",
-    'TRM',
-    'IB_ERM',
-    'IB_IRM',
-    'CAD',
-    'CondCAD',
-    'Testing',
+    # 'ARM',
+    # 'VREx',
+    # 'RSC',
+    # 'SD',
+    # 'ANDMask',
+    # 'SANDMask',
+    # 'IGA',
+    # 'SelfReg',
+    # "Fishr",
+    # 'TRM',
+    # 'IB_ERM',
+    # 'IB_IRM',
+    # 'CAD',
+    # 'CondCAD',
+    # 'Testing',
     'RandConv_ViT',
     'RandConv_CNN',
     'AugMix_CNN',
@@ -95,8 +95,6 @@ ALGORITHMS = [
     'ALT_CNN',
     'ABA_ViT',
     'ALT_ViT',
-    'New_CNN'
-    
 ]
 
 
@@ -3426,15 +3424,7 @@ def return_backbone_network(network_name, num_classes, hparams):
             network = timm.create_model("deit_base_patch16_224.fb_in1k",pretrained=True)
         return network
     elif network_name == "ViTBase":
-        # network = visiontransformer.vit_base_patch16_224(pretrained=True,)   
-        # print("ViTBase Network")
-        # if hparams['empty_head']:
-        #     network.head = nn.Linear(768, num_classes)
-        
-        #network = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
-        
-        #network = timm.create_model("vit_large_patch16_224",pretrained=True)
-        #network = timm.create_model("hf_hub:timm/vit_base_patch16_224.orig_in21k_ft_in1k", pretrained=True)
+       
         print("ViTBase Network")
         if hparams['empty_head']:
             network = timm.create_model("vit_base_patch16_224.orig_in21k_ft_in1k",pretrained=True,num_classes=num_classes)

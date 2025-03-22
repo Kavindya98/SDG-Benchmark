@@ -124,12 +124,7 @@ def ME_ADA_AUGMENT(in_splits, algorithm, device, N_WORKERS, hparams, args):
     
     images = np.stack(images)
 
-    # if not hparams["custom_train_val"]:
-    #     in_splits[0][0].underlying_dataset.data = np.concatenate([in_splits[0][0].underlying_dataset.data,images])
-    #     in_splits[0][0].underlying_dataset.targets.extend(labels)
-    #     print("New dataset size ",len(in_splits[0][0].underlying_dataset.data))
-    #     in_splits[0][0].underlying_dataset.transform = default_transform
-    # else:
+   
     in_splits[0][0].data = np.concatenate([in_splits[0][0].data,images])
     in_splits[0][0].targets.extend(labels)
     print("New dataset size ",len(in_splits[0][0].data))
@@ -279,22 +274,6 @@ if __name__ == "__main__":
     
     algorithm.to(device)
 
-    ### DEBUGGING    
-    #     print(dataset)
-
-    # Split each env into an 'in-split' and an 'out-split'. We'll train on
-    # each in-split except the test envs, and evaluate on all splits.
-
-    # To allow unsupervised domain adaptation experiments, we split each test
-    # env into 'in-split', 'uda-split' and 'out-split'. The 'in-split' is used
-    # by collect_results.py to compute classification accuracies.  The
-    # 'out-split' is used by the Oracle model selection method. The unlabeled
-    # samples in 'uda-split' are passed to the algorithm at training time if
-    # args.task == "domain_adaptation". If we are interested in comparing
-    # domain generalization and domain adaptation results, then domain
-    # generalization algorithms should create the same 'uda-splits', which will
-    # be discarded at training.
-
     in_splits = []
     out_splits = []
     uda_splits = []
@@ -337,37 +316,7 @@ if __name__ == "__main__":
                                         int(len(env) * args.holdout_fraction),
                                         misc.seed_hash(args.trial_seed, env_i))
                     
-            
-        
 
-        # if not assigned and hparams['custom_train_val']:
-        #     for env_j, env_ in enumerate(dataset):
-        #         print("in loop env no",env_j,"len env",len(env_))
-        #         if (not env_j in args.test_envs) and hparams['custom_val'] == env_j:
-        #             out = env_
-        #         elif (not env_j in args.test_envs) and hparams['custom_train'] == env_j:
-        #             in_= env_
-        #     assigned = True
-        #     print("train val captured ",env_i)
-            
-        # elif assigned and hparams['custom_train_val']:
-        #     if not (hparams['custom_val'] == env_i or hparams['custom_train'] == env_i):
-        #         print("test captured ",env_i)
-        #         out, in_ = misc.split_dataset(env,
-        #                               int(len(env) * args.holdout_fraction),
-        #                               misc.seed_hash(args.trial_seed, env_i))
-        #     else:
-        #         print("train val captured after assign",env_i)
-        #         continue    
-        # else:
-        #     out, in_ = misc.split_dataset(env,
-        #                               int(len(env) * args.holdout_fraction),
-        #                               misc.seed_hash(args.trial_seed, env_i))
-        # print("came out ",env_i)
-        # if env_i in args.test_envs:
-        #     uda, in_ = misc.split_dataset(in_,
-        #                                   int(len(in_) * args.uda_holdout_fraction),
-        #                                   misc.seed_hash(args.trial_seed, env_i))
 
         if hparams['class_balanced']:
             in_weights = misc.make_weights_for_balanced_classes(in_)
