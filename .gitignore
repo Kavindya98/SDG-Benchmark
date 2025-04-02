@@ -4,10 +4,10 @@ domainbed/scripts/test_ViT_RB/IID_best.pkl
 domainbed/pretrained_models/
 domainbed/data
 Results/
-# runs/
-# domainbed/scripts/__pycache__/
-# domainbed/__pycache__/
-# domainbed/lib/__pycache__/
-# *.cpython-38.pyc
+runs/
+domainbed/scripts/__pycache__/
+domainbed/__pycache__/
+domainbed/lib/__pycache__/
+*.cpython-38.pyc
 
 
