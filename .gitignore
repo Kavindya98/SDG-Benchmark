@@ -9,5 +9,6 @@ domainbed/scripts/__pycache__/
 domainbed/__pycache__/
 domainbed/lib/__pycache__/
 *.cpython-38.pyc
+*.out
 
 
