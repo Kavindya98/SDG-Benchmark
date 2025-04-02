@@ -118,7 +118,8 @@ def download_pacs(data_dir):
     # Original URL: http://www.eecs.qmul.ac.uk/~dl307/project_iccv2017
     full_path = stage_path(data_dir, "PACS")
 
-    download_and_extract("https://drive.google.com/uc?id=1JFr8f805nMUelQWWmfnJR3y4_SYoN5Pd",
+    #download_and_extract("https://drive.google.com/uc?id=1JFr8f805nMUelQWWmfnJR3y4_SYoN5Pd",
+    download_and_extract("http://www.eecs.qmul.ac.uk/~dl307/project_iccv2017",
                          os.path.join(data_dir, "PACS.zip"))
 
     os.rename(os.path.join(data_dir, "kfold"),
@@ -308,7 +309,7 @@ if __name__ == "__main__":
     # download_domain_net(args.data_dir)
     #download_imagenet_C(args.data_dir)
     # download_vlcs(args.data_dir)
-    download_terra_incognita(args.data_dir)
+    download_pacs(args.data_dir)
     # download_sviro(args.data_dir)
     # Camelyon17Dataset(root_dir=args.data_dir, download=True)
     # FMoWDataset(root_dir=args.data_dir, download=True)

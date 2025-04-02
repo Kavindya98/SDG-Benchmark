@@ -40,6 +40,7 @@ DATASETS = [
     "TerraIncognita",
     "DomainNet",
     "SVIRO",
+    "ImageNet",
     "ImageNet_9",
     "ImageNet_C",
     "ImageNet_val",
@@ -370,7 +371,7 @@ class PACS_Custom(MultipleDomainDataset):
     ENVIRONMENTS = ['AAP', 'AR', 'C', 'S']
     def __init__(self, root, test_envs, hparams):
         super().__init__()
-        root = os.path.join(root, "PACS/Unsplit_data")
+        root = os.path.join(root, "PACS/")
         environments = self.ENVIRONMENTS
         environments = sorted(environments) # list of all domains in the dataset, in sorted order
         
@@ -575,7 +576,7 @@ class PACS(MultipleEnvironmentImageFolder):
     STEPS_PER_EPOCH =125
     ENVIRONMENTS = ['AAP', 'AR', 'C', 'S']
     def __init__(self, root, test_envs, hparams):
-        self.dir = os.path.join(root, "PACS/Unsplit_data")
+        self.dir = os.path.join(root, "PACS/")
         super().__init__(self.dir, test_envs, hparams['data_augmentation'], hparams)
 
 class PACS_ALT(MultipleEnvironmentImageFolder):
@@ -584,7 +585,7 @@ class PACS_ALT(MultipleEnvironmentImageFolder):
     STEPS_PER_EPOCH =100
     ENVIRONMENTS = ['AAP', 'AR', 'C', 'S']
     def __init__(self, root, test_envs, hparams):
-        self.dir = os.path.join(root, "PACS/Unsplit_data")
+        self.dir = os.path.join(root, "PACS/")
         super().__init__(self.dir, test_envs, hparams['data_augmentation'], hparams)
 
 class DomainNet(MultipleEnvironmentImageFolder):
@@ -633,7 +634,7 @@ class ImageNet(MultipleEnvironmentImageFolder):
     CHECKPOINT_FREQ = 5000
     ENVIRONMENTS = ["train","valid"]
     def __init__(self, root, test_envs, hparams):
-        self.dir = os.path.join(root, "ImageNet_val/JustCopy")
+        self.dir = os.path.join(root, "imagenet2012/")
         super().__init__(self.dir, test_envs, hparams['data_augmentation'], hparams)
 
 class ImageNet_V2(MultipleEnvironmentImageFolder):
