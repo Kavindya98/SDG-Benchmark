@@ -120,11 +120,9 @@ def ME_ADA_AUGMENT(in_splits, algorithm, device, N_WORKERS, hparams, args):
         images_train, labels_train = images_train.to(device), labels_train.to(device)
         inputs1, targets1 = algorithm.maximize(images_train, labels_train)
         images += [image_transform(x) for x in torch.unbind(recover_transform(inputs1), dim=0)]
+
         labels += [x.item() for x in torch.unbind(targets1,dim=0)]
     
-    images = np.stack(images)
-
-   
     in_splits[0][0].data = np.concatenate([in_splits[0][0].data,images])
     in_splits[0][0].targets.extend(labels)
     print("New dataset size ",len(in_splits[0][0].data))
