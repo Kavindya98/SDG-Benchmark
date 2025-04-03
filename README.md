@@ -26,7 +26,7 @@ Replace `<environment_name>` with the name specified in your `environment.yml`.
 
 ### 🖼️ PACS Dataset
 
-- Download PACS dataset from the [original source](https://sketchx.eecs.qmul.ac.uk/).
+- Download PACS dataset from the (https://drive.google.com/uc?id=1JFr8f805nMUelQWWmfnJR3y4_SYoN5Pd).
 - Rename the domain folders as follows:
 
 | 🗂️ Original Folder Name | 🔁 New Folder Name |
