@@ -1,4 +1,6 @@
-from openpyxl import load_workbook
+
+import argparse
+
 
 def read_best_model_values(file_path):
     with open(file_path, 'r') as file:
@@ -15,7 +17,7 @@ def read_best_model_values(file_path):
     return values_list
 
 
-def average_values(file_paths):
+def average_over_trials(file_paths):
     num_files = len(file_paths)
     total_values = [0.0] * len(read_best_model_values(file_paths[0]))
 
@@ -29,57 +31,36 @@ def average_values(file_paths):
 
     return average_values
 
-def compute_variance(numbers):
-    # Step 1: Calculate the Mean
-    mean = sum(numbers) / len(numbers)
-    
-    # Step 2: Compute the Squared Differences
-    squared_diffs = [(x - mean) ** 2 for x in numbers]
-    
-    # Step 3: Calculate the Variance
-    variance = sum(squared_diffs) / len(numbers)
-    
-    return round(mean,5), round(variance,5)
 
-def varinace(file_paths):
-
-    ood_avg = []
-    for file_path in file_paths:
-        values = read_best_model_values(file_path)
-        ood_avg.append((values[4]+values[6]+values[8])/3)
-
-    ood_avg = [l*100 for l in ood_avg]
-
-    return compute_variance(ood_avg)
-
-def read_file_and_parse(filename):
+def read_file_and_parse(filename, trial_seed=[0, 1, 2]):
     data = []
 
-    with open(filename, 'r') as file:
-        for line in file:
-            line_data = line.strip().split(',')
-            data.append(line_data)
+    for trail in trial_seed:
+        file_path = filename + f"/t123_s{trail}/out.txt"
+        data.append(file_path)
 
     return data
 
-def save_to_excel(filename, data):
-    wb = load_workbook(filename)
-    ws = wb.active
-    ws.append(data)
-    wb.save(filename)
+def main():
+    parser = argparse.ArgumentParser(description='Domain generalization')
+    parser.add_argument('--filename', type=str, default="./Results/PACS_Custom/ME_ADA_CNN/Resnet18")
+    args = parser.parse_args()
 
-filename = '/home/kavindya/data/Model/TFS-ViT_Token-level_Feature_Stylization/Results/PACS/SagNet/ResNet18_consistant_with_paper/data.txt'
-result = read_file_and_parse(filename)
+    
+    file_paths = read_file_and_parse(args.filename)
 
-for row in result:
-    #file_paths = ["/home/kavindya/data/Model/Duplicate/TFS-ViT_Token-level_Feature_Stylization/Results/T2T14_false/sweep_drate_0.1_nlay_1/t123_s0/out.txt", "/home/kavindya/data/Model/Duplicate/TFS-ViT_Token-level_Feature_Stylization/Results/T2T14_false/sweep_drate_0.1_nlay_1/t123_s1/out.txt", "/home/kavindya/data/Model/Duplicate/TFS-ViT_Token-level_Feature_Stylization/Results/T2T14_false/sweep_drate_0.1_nlay_1/t123_s2/out.txt"]
-    result_old = average_values(row)
+    
+    result_old = average_over_trials(file_paths)
     result_100 = [i * 100 for i in result_old]
     result = [ round(elem, 2) for elem in result_100 ]
     OOD = round((result[4]+result[6]+result[8])/3,2)
-    OOD_avg, OOD_variance = varinace(row)
-    Average = [result[2], OOD, OOD_avg, OOD_variance, round(result[2]-OOD,2), result[4], result[6], result[8]]
-    print("Average values:", Average)
+    print("IID (Photo) Performance:", result[2])
+    print("Overall OOD Performance:", OOD)
+    print("Domain Gap:",round(result[2]-OOD,2))
+    print("OOD (Art) Performance:", result[4])
+    print("OOD (Cartoon) Performance:", result[6])
+    print("OOD (Sketch) Performance:", result[8])
 
-    # filename = ""
-    # save_to_excel(filename, Average)
+
+if __name__ == "__main__":
+    main()

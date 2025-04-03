@@ -55,8 +55,15 @@ Run RandConv method with ResNet18:
 ```bash
 bash bash_scripts/RandConv/run_sweep_Resnet18.sh
 ```
+Results will be saved in Results/PACS_Custom/ME_ADA_CNN/Resnet18
 
-To obtain the average performance from multiple trials, use the provided `Av.py` script (details to be added). [TODO]
+To obtain the average performance from multiple trials, use the provided `Av.py` script 
+
+```bash
+python Av.py --filename ./Results/PACS_Custom/ME_ADA_CNN/Resnet18
+```
+    
+
 
 ---
 
