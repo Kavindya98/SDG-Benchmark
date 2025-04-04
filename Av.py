@@ -1,6 +1,8 @@
 
 import argparse
 
+import numpy as np
+
 
 def read_best_model_values(file_path):
     with open(file_path, 'r') as file:
@@ -20,16 +22,18 @@ def read_best_model_values(file_path):
 def average_over_trials(file_paths):
     num_files = len(file_paths)
     total_values = [0.0] * len(read_best_model_values(file_paths[0]))
-
-    for file_path in file_paths:
+    average_over_domains = [0.0] * num_files
+    for i, file_path in enumerate(file_paths):
         values = read_best_model_values(file_path)
 
         if values is not None:
             total_values = [total + value for total, value in zip(total_values, values)]
+        
+        average_over_domains[i] = (values[4]+values[6]+values[8])*100 / 3
 
     average_values = [total / num_files for total in total_values]
 
-    return average_values
+    return average_values, average_over_domains
 
 
 def read_file_and_parse(filename, trial_seed=[0, 1, 2]):
@@ -50,12 +54,13 @@ def main():
     file_paths = read_file_and_parse(args.filename)
 
     
-    result_old = average_over_trials(file_paths)
+    result_old, average_over_domains = average_over_trials(file_paths)
     result_100 = [i * 100 for i in result_old]
     result = [ round(elem, 2) for elem in result_100 ]
-    OOD = round((result[4]+result[6]+result[8])/3,2)
+    OOD = round(np.mean(average_over_domains),2)
+    std = round(np.std(average_over_domains),2)
     print("IID (Photo) Performance:", result[2])
-    print("Overall OOD Performance:", OOD)
+    print("Overall OOD Performance:", OOD, "±", std)
     print("Domain Gap:",round(result[2]-OOD,2))
     print("OOD (Art) Performance:", result[4])
     print("OOD (Cartoon) Performance:", result[6])
